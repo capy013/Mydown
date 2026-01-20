@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>數神 MathGod 旗艦版</title>
+    <title>數神 MathGod 最終版</title>
     
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,29 +15,59 @@
 
     <style>
         :root {
-            --primary: #10b981; --primary-dark: #064e3b;
-            --amber: #f59e0b; --amber-dark: #78350f;
-            --bg: #050505; --card-bg: rgba(26, 26, 26, 0.6);
+            --primary: #10b981; 
+            --bg: #050505; 
+            --card-bg: rgba(26, 26, 26, 0.6);
             --border: rgba(255, 255, 255, 0.08);
         }
         [v-cloak] { display: none !important; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Noto Sans TC', sans-serif; -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; }
+        body { 
+            background-color: var(--bg); 
+            color: #fff; 
+            font-family: 'Noto Sans TC', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+            overscroll-behavior-y: none;
+        }
         
         /* 高級玻璃質感 */
-        .glass { background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); }
-        .glass-input { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; }
-        .glass-input:focus-within { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2); background: rgba(0,0,0,0.5); }
+        .glass { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px); 
+            border: 1px solid var(--border); 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); 
+        }
+        .glass-input { 
+            background: rgba(0,0,0,0.3); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            transition: all 0.3s; 
+        }
+        .glass-input:focus-within { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2); 
+            background: rgba(0,0,0,0.5); 
+        }
         
-        /* 特效 */
+        /* 特效類 */
         .font-num { font-family: 'JetBrains Mono', monospace; }
         .btn-press { transition: transform 0.1s; }
         .btn-press:active { transform: scale(0.96); }
         
+        /* 底部漸層遮罩 (Fix 3) */
+        .footer-gradient {
+            background: linear-gradient(to top, #050505 20%, rgba(5,5,5,0.9) 50%, rgba(5,5,5,0) 100%);
+            pointer-events: none;
+        }
+
         /* 動態引導 */
         .pulse-guide { animation: pulse-border 2s infinite; }
-        @keyframes pulse-border { 0% { border-color: rgba(16, 185, 129, 0.3); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { border-color: rgba(16, 185, 129, 0.8); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { border-color: rgba(16, 185, 129, 0.3); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        @keyframes pulse-border { 
+            0% { border-color: rgba(16, 185, 129, 0.3); } 
+            50% { border-color: rgba(16, 185, 129, 0.8); box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); } 
+            100% { border-color: rgba(16, 185, 129, 0.3); } 
+        }
 
-        /* Toast 通知 */
+        /* Toast 動畫 */
         .toast-enter-active, .toast-leave-active { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(-30px) scale(0.9); }
 
@@ -54,7 +84,7 @@
 </head>
 <body>
 
-<div id="app" v-cloak class="min-h-screen flex flex-col max-w-[500px] mx-auto relative pb-32">
+<div id="app" v-cloak class="min-h-screen flex flex-col max-w-[500px] mx-auto relative pb-36">
     
     <div class="fixed top-8 left-0 right-0 z-[999] flex flex-col items-center pointer-events-none px-4">
         <transition-group name="toast">
@@ -78,8 +108,8 @@
                     <h1 class="text-2xl font-black italic tracking-tighter text-white flex items-center gap-2">
                         MathGod <i class="fas fa-bolt text-yellow-400 animate-pulse"></i>
                     </h1>
-                    <p class="text-[9px] font-bold text-emerald-400/80 tracking-[0.2em] uppercase">
-                        {{ isEditing ? 'EDIT MODE' : 'ULTIMATE EDITION' }}
+                    <p class="text-[10px] font-bold text-emerald-400/80 tracking-[0.1em] uppercase">
+                        {{ isEditing ? '正在修改模式' : '朋友夾錢計算器' }}
                     </p>
                 </div>
             </div>
@@ -101,7 +131,7 @@
         <div class="flex gap-3">
             <div class="flex-1 glass-input rounded-2xl flex items-center px-4 relative">
                 <i class="fas fa-pen text-[10px] text-gray-500 mr-3"></i>
-                <input v-model="eventName" @change="saveData" class="w-full bg-transparent py-3 text-sm font-bold outline-none placeholder-white/20" placeholder="活動名稱 (例如: 東京 Day1)">
+                <input v-model="eventName" @change="saveData" class="w-full bg-transparent py-3 text-sm font-bold outline-none placeholder-white/20" placeholder="活動名稱 (例如: 日本 Day1)">
             </div>
             <button onclick="document.getElementById('dateInput').showPicker()" class="w-12 glass-input rounded-2xl flex items-center justify-center hover:border-emerald-500/50 btn-press">
                 <i class="fas fa-calendar-day text-emerald-400 pointer-events-none"></i>
@@ -155,7 +185,7 @@
 
             <div class="space-y-4">
                 <div class="glass-input rounded-2xl p-1">
-                    <input v-model="form.item" class="w-full bg-transparent px-4 py-3 text-sm font-bold outline-none placeholder-white/30" placeholder="消費項目 (例: 壽司郎)">
+                    <input v-model="form.item" class="w-full bg-transparent px-4 py-3 text-sm font-bold outline-none placeholder-white/30" placeholder="消費項目 (例如: 晚餐)">
                 </div>
 
                 <div class="grid grid-cols-12 gap-3">
@@ -248,18 +278,20 @@
         </section>
     </main>
 
+    <div class="fixed bottom-0 left-0 right-0 h-40 footer-gradient z-40 pointer-events-none"></div>
+    
     <footer class="fixed bottom-6 left-0 right-0 max-w-[500px] mx-auto px-6 z-50 grid grid-cols-2 gap-4 pointer-events-none">
         <button @click="showShareModal = true" :disabled="expenses.length === 0" 
                 class="pointer-events-auto bg-emerald-600 hover:bg-emerald-500 py-4 rounded-2xl font-black text-xs shadow-2xl shadow-emerald-900/40 btn-press disabled:opacity-50 disabled:grayscale transition-all flex items-center justify-center gap-2 border border-emerald-400/20 backdrop-blur-md text-white">
             <i class="fas fa-receipt"></i> 結算分享
         </button>
         <div class="relative pointer-events-auto group">
-            <button @click="showResetMenu = !showResetMenu" class="w-full bg-[#151515]/90 border border-white/10 py-4 rounded-2xl font-black text-xs text-gray-400 backdrop-blur-md btn-press hover:bg-white/5 transition-all flex items-center justify-center gap-2">
-                <i class="fas fa-cog"></i> 設定重設
+            <button @click="showResetMenu = !showResetMenu" class="w-full bg-[#151515]/90 border border-white/10 py-4 rounded-2xl font-black text-xs text-gray-400 backdrop-blur-md btn-press hover:bg-white/5 transition-all flex items-center justify-center gap-2 shadow-xl">
+                <i class="fas fa-cog"></i> 設定 / 重設
             </button>
             <div v-if="showResetMenu" class="absolute bottom-full mb-3 left-0 right-0 bg-[#1a1a1a] rounded-2xl border border-white/10 overflow-hidden shadow-2xl z-50 animate-[slideUp_0.2s_ease-out]">
-                <button @click="resetData('expenses')" class="w-full p-4 text-xs font-bold text-left text-red-300 border-b border-white/5 hover:bg-white/5"><i class="fas fa-eraser mr-2"></i>只清空紀錄</button>
-                <button @click="resetData('all')" class="w-full p-4 text-xs font-bold text-left text-red-500 hover:bg-white/5"><i class="fas fa-bomb mr-2"></i>全部毀滅 (含朋友)</button>
+                <button @click="resetData('expenses')" class="w-full p-4 text-xs font-bold text-left text-red-300 border-b border-white/5 hover:bg-white/5"><i class="fas fa-eraser mr-2"></i>只清空消費紀錄</button>
+                <button @click="resetData('all')" class="w-full p-4 text-xs font-bold text-left text-red-500 hover:bg-white/5"><i class="fas fa-bomb mr-2"></i>清除所有紀錄 (包括朋友)</button>
             </div>
         </div>
     </footer>
@@ -346,7 +378,7 @@
 
             <div class="glass p-6 rounded-[2rem] space-y-4">
                 <div class="flex justify-between items-center bg-black/20 p-3 rounded-xl border border-white/5">
-                    <span class="text-xs font-bold text-gray-300">包含詳細明細</span>
+                    <span class="text-xs font-bold text-gray-300">列出消費紀錄</span>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" v-model="shareOptions.showList" class="sr-only peer">
                         <div class="w-10 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
@@ -378,7 +410,7 @@
 </div>
 
 <script>
-// Firebase 設定
+// Firebase Config (不變)
 const firebaseConfig = { apiKey: "yFDRUSUFAFnZf6AGdsEA9LxSyLcZF75oIFfib5At", databaseURL: "https://mathgod2-default-rtdb.asia-southeast1.firebasedatabase.app/", projectId: "mathgod2" };
 try { firebase.initializeApp(firebaseConfig); } catch(e) {}
 const db = firebase.database();
@@ -394,13 +426,11 @@ createApp({
         const form = ref({ item: "", amount: null, currency: "HKD", payer: "", involved: [] });
         const currentRate = ref(1); const shareOptions = ref({ showList: true });
 
-        // Toast 系統
         const toast = (msg, type='success') => {
             const id = Date.now(); toasts.value.push({id, msg, type});
             setTimeout(() => toasts.value = toasts.value.filter(t=>t.id!==id), 3000);
         };
 
-        // 資料儲存與同步
         const saveData = () => {
             const data = { users: [...users.value], expenses: [...expenses.value], eventName: eventName.value };
             localStorage.setItem('mathGod_localData', JSON.stringify(data));
@@ -497,13 +527,12 @@ createApp({
         };
 
         const resetData = (t) => {
-            if(confirm("確定要清空嗎？此操作無法復原。")) {
+            if(confirm(t==='all' ? "確定清除所有紀錄（包括朋友）嗎？" : "確定只清空消費紀錄嗎？")) {
                 if(t==='all'){users.value=[]; expenses.value=[]; eventName.value="";} else {expenses.value=[];}
                 saveData(); showResetMenu.value=false; toast("資料已重置");
             }
         };
 
-        // 計算邏輯
         const settlements = computed(() => {
             let bal = {}; users.value.forEach(u => bal[u] = 0);
             expenses.value.forEach(e => {
@@ -519,6 +548,23 @@ createApp({
             }
             return res;
         });
+
+        // Fix 1 (Logic part): 複製文字邏輯修正
+        const copyText = () => {
+            let msg = `【${eventName.value || '數神結算'}】\n總額: HKD $${expenses.value.reduce((s,e)=>s+(e.hkd||0),0).toFixed(1)}\n\n`;
+            settlements.value.forEach(s => msg += `${s.from} ➔ ${s.to}: $${s.amount.toFixed(1)}\n`);
+            
+            // 如果勾選了 "列出消費紀錄"，則追加明細
+            if (shareOptions.value.showList) {
+                msg += `\n--- 消費紀錄 ---\n`;
+                expenses.value.forEach(e => {
+                    msg += `${e.item} (${e.payer}): $${e.hkd.toFixed(1)}\n`;
+                });
+            }
+
+            msg += `\n以上係今次活動嘅數，請對對。可以跟住過數喇，如果有錯請通知數神。`;
+            navigator.clipboard.writeText(msg).then(()=>toast("已複製")).catch(()=>toast("複製失敗","error"));
+        };
 
         onMounted(() => {
             const local = JSON.parse(localStorage.getItem('mathGod_localData') || '{}');
@@ -541,13 +587,7 @@ createApp({
             handleCurrencyChange, toggleSelectAll: () => { form.value.involved = form.value.involved.length === users.value.length ? [] : [...users.value]; },
             toggleInvolved: (u) => { const idx = form.value.involved.indexOf(u); if(idx>-1) form.value.involved.splice(idx,1); else form.value.involved.push(u); },
             appendDate: (e) => { if(e.target.value) { eventName.value += ` (${e.target.value})`; saveData(); } },
-            resetData, removeHistoryRoom,
-            copyText: () => {
-                let msg = `【${eventName.value || '數神結算'}】\n總額: HKD $${expenses.value.reduce((s,e)=>s+(e.hkd||0),0).toFixed(1)}\n\n`;
-                settlements.value.forEach(s => msg += `${s.from} ➔ ${s.to}: $${s.amount.toFixed(1)}\n`);
-                msg += `\n以上係今次活動嘅數，請對對。可以跟住過數喇，如果有錯請通知數神。`;
-                navigator.clipboard.writeText(msg).then(()=>toast("已複製")).catch(()=>toast("複製失敗","error"));
-            },
+            resetData, removeHistoryRoom, copyText,
             generateImage: async () => {
                 const canvas = await html2canvas(document.getElementById('capture-zone'), { backgroundColor: '#080808', scale: 3, useCORS: true });
                 const link = document.createElement('a'); link.download = `MathGod_${Date.now()}.png`; link.href = canvas.toDataURL(); link.click();
