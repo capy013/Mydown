@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>MathGod 夾錢小助手</title>
     
+    <link rel="icon" href="https://i.postimg.cc/sxvwQKGF/sync3-Gemini-Generated-Image-arwtlearwtlearwt.png">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/sxvwQKGF/sync3-Gemini-Generated-Image-arwtlearwtlearwt.png">
+
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -12,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="https://i.postimg.cc/sxvwQKGF/sync3-Gemini-Generated-Image-arwtlearwtlearwt.png">
+
     <style>
         :root {
             --primary: #10b981; 
@@ -89,6 +92,11 @@
         .math-check { appearance: none; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-radius: 6px; position: relative; transition: all 0.2s; }
         .math-check:checked { background: var(--primary); border-color: var(--primary); }
         .math-check:checked::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; font-size: 10px; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+        
+        /* Logo 樣式優化 */
+        .app-logo {
+            filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3));
+        }
     </style>
 </head>
 <body>
@@ -98,7 +106,7 @@
     <transition name="fade">
         <div v-if="isLoading" class="fixed inset-0 z-[200] bg-black flex items-center justify-center">
             <div class="flex flex-col items-center">
-                <i class="fas fa-circle-notch fa-spin text-emerald-500 text-3xl mb-3"></i>
+                <img src="https://i.postimg.cc/sxvwQKGF/sync3-Gemini-Generated-Image-arwtlearwtlearwt.png" class="w-16 h-16 rounded-2xl mb-4 animate-pulse shadow-2xl">
                 <p class="text-xs text-gray-500 font-bold tracking-widest uppercase">Processing...</p>
             </div>
         </div>
@@ -122,13 +130,16 @@
                 <button @click="showTutorial = true" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs hover:bg-white/20 transition-all">
                     <i class="fas fa-question text-white/70"></i>
                 </button>
-                <div>
-                    <h1 class="text-2xl font-black italic tracking-tighter text-white flex items-center gap-2">
-                        MathGod <i class="fas fa-bolt text-yellow-400 animate-pulse"></i>
-                    </h1>
-                    <p class="text-[10px] font-bold text-emerald-400/80 tracking-[0.1em] uppercase">
-                        {{ isEditing ? '正在修改模式' : '朋友夾錢計算器' }}
-                    </p>
+                <div class="flex items-center gap-3">
+                    <img src="https://i.postimg.cc/sxvwQKGF/sync3-Gemini-Generated-Image-arwtlearwtlearwt.png" class="h-10 w-10 rounded-xl object-contain shadow-lg border border-white/10 app-logo">
+                    <div>
+                        <h1 class="text-xl font-black italic tracking-tighter text-white leading-none">
+                            MathGod
+                        </h1>
+                        <p class="text-[9px] font-bold text-emerald-400/80 tracking-[0.1em] uppercase">
+                            {{ isEditing ? '正在修改模式' : '朋友夾錢計算器' }}
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -328,9 +339,7 @@
             <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-emerald-900/20 to-transparent pointer-events-none"></div>
             
             <div class="relative z-10 text-center mb-8">
-                <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-                    <i class="fas fa-wifi text-emerald-400 text-xl"></i>
-                </div>
+                <img src="https://i.postimg.cc/sxvwQKGF/sync3-Gemini-Generated-Image-arwtlearwtlearwt.png" class="w-20 h-20 mx-auto mb-4 rounded-2xl shadow-[0_0_20px_rgba(16,185,129,0.3)] border border-white/10 object-contain bg-black/20">
                 <h3 class="text-xl font-black">同步控制中心</h3>
             </div>
 
@@ -368,7 +377,7 @@
                 <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-gray-300 to-transparent opacity-20"></div>
                 
                 <div class="text-center border-b-2 border-dashed border-gray-400 pb-4 mb-4">
-                    <h2 class="font-black text-2xl tracking-tighter uppercase mb-1">夾錢通知 (Payment Notice)</h2>
+                    <h2 class="font-black text-2xl tracking-tighter uppercase mb-1">過數通知單</h2>
                     <p v-if="eventName" class="text-sm font-bold text-gray-600">{{ eventName }}</p>
                 </div>
 
@@ -378,12 +387,12 @@
                 </div>
 
                 <div class="bg-white p-3 rounded border border-gray-300 mb-4">
-                    <p class="text-[10px] font-bold text-gray-500 mb-2 border-b border-gray-200 pb-1">請跟隨以下列表過數 (Transfer List)</p>
+                    <p class="text-[10px] font-bold text-gray-500 mb-2 border-b border-gray-200 pb-1">過數指南 (Payment Guide)</p>
                     <div v-if="settlements.length === 0" class="text-center text-gray-400 text-xs py-2">沒有人需要夾錢</div>
                     <div v-for="s in settlements" class="flex justify-between items-center py-1 text-sm font-bold">
                         <div class="flex items-center gap-2">
                             <span class="text-red-600">{{ s.from }}</span> 
-                            <i class="fas fa-arrow-right-long text-gray-400"></i> 
+                            <i class="fas fa-arrow-right-long text-gray-400 mx-2"></i> 
                             <span class="text-emerald-600">{{ s.to }}</span>
                         </div>
                         <span>${{ s.amount.toFixed(1) }}</span>
@@ -624,15 +633,13 @@ createApp({
             return res;
         });
 
-        // Fix 1 & 2 & 3: 文字複製內容更清楚，箭頭優化，不需日期
         const copyText = () => {
-            let msg = `🧾 夾錢通知 (Payment Notice)\n`;
+            let msg = `夾錢通知 (Payment Notice)\n`;
             if (eventName.value) msg += `活動: ${eventName.value}\n`;
             msg += `------------------------------\n`;
             
-            msg += `👇 請跟隨以下列表過數:\n`;
+            msg += `請跟隨以下列表過數 (Transfer List):\n`;
             if(settlements.value.length === 0) msg += `(沒有人需要夾錢)\n`;
-            // Fix 2: 箭頭
             settlements.value.forEach(s => msg += `${s.from} ➜ ${s.to}: $${s.amount.toFixed(1)}\n`);
             
             if (shareOptions.value.showList) {
